@@ -31,12 +31,18 @@ end
 def open_cluster
   start = Time.now
   Capybara.using_wait_time(12*60) do # 12 minutes
-    click_button 'OPEN'
+    incorta_window = window_opened_by { click_button 'OPEN' }
+    puts "Time taken to start cluster #{(Time.now - start).to_i} seconds"
+
+    within_window incorta_window do
+      expect(page).to have_content 'Unified Data Analytics Platform'
+    end
+
+    return incorta_window
   end
-  puts "Time taken to start cluster #{(Time.now - start).to_i} seconds"
+end
 
-  expect(page).to have_content 'Unified Data Analytics Platform'
-
+def login_incorta
   fill_in 'tenant', with: 'default'
   fill_in 'username', with: 'admin'
   fill_in 'password', with: '1234'
@@ -58,8 +64,11 @@ describe "Incorta cloud stress testing", type: :feature do
 
     login(email)
 
-    open_cluster
+    incorta_window = open_cluster
 
-    open_dashboard
+    within_window incorta_window do
+      login_incorta
+      open_dashboard
+    end
   end
 end
