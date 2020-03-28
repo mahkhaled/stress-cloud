@@ -99,5 +99,6 @@ end
 Capybara.configure do |config|
   config.run_server = false
   config.default_driver = :selenium
+  config.default_max_wait_time = 10
   config.app_host = 'http://cloud-staging.incortalabs.com' # change url
 end
