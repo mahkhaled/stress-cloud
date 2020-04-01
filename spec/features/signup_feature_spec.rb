@@ -32,7 +32,10 @@ def open_cluster
   start = Time.now
   Capybara.using_wait_time(12*60) do # 12 minutes
     incorta_window = window_opened_by { click_button 'OPEN' }
+    puts "*"*20
     puts "Time taken to start cluster #{(Time.now - start).to_i} seconds"
+    puts "*"*20
+
 
     within_window incorta_window do
       expect(page).to have_content 'Unified Data Analytics Platform'
