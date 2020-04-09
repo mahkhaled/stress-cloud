@@ -1,10 +1,10 @@
-experiments = 1
-interval = 70
+experiments = 7
+interval = 20
 
 threads = []
 
 1.upto experiments do |i|
-  File.write('foo.txt', '')
+  # File.write('foo.txt', '')
   threads << Thread.new do
     sleep (i-1) * interval
     puts `rspec`

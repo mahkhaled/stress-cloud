@@ -105,13 +105,21 @@ describe "Incorta cloud stress testing", type: :feature do
     within_window incorta_window do
       login_incorta
       open_dashboard
-      result.merge!(load_schema('OnlineStore'))
+      result.merge!({trial1: load_schema('OnlineStore')})
+
+      result.merge!({trial2: load_schema('OnlineStore')})
+      result.merge!({trial3: load_schema('OnlineStore')})
+      result.merge!({trial4: load_schema('OnlineStore')})
+      result.merge!({trial5: load_schema('OnlineStore')})
+
+
     end
 
     result[time: (Time.now - start).to_i]
     puts result
 
     f = File.open('foo.txt', 'a')
+    f.write("\n")
     f.write(result)
     f.close
   end
