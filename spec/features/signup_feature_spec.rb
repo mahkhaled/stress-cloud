@@ -4,7 +4,7 @@ def signup(email)
   fill_in 'Last Name', with: 'khaled'
   fill_in 'SignUpForm_email', with: email
   fill_in 'Job Title', with: 'stresscloudtest'
-  fill_in 'Company', with: 'stress-stg'
+  fill_in 'Company', with: 'stress-stg1'
 
   find('#SignUpForm_industryId').click
   within('ul.ant-select-dropdown-menu') do
