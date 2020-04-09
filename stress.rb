@@ -4,8 +4,7 @@ interval = 70
 threads = []
 
 1.upto experiments do |i|
-  f = File.open('foo.txt')
-  f.close
+  File.write('foo.txt'. '')
   threads << Thread.new do
     sleep (i-1) * interval
     puts `rspec`
