@@ -4,7 +4,7 @@ def signup(email)
   fill_in 'Last Name', with: 'khaled'
   fill_in 'SignUpForm_email', with: email
   fill_in 'Job Title', with: 'stresscloudtest'
-  fill_in 'Company', with: 'stress-gke'
+  fill_in 'Company', with: 'stress-stg'
 
   find('#SignUpForm_industryId').click
   within('ul.ant-select-dropdown-menu') do
@@ -47,8 +47,8 @@ def open_cluster
 end
 
 def login_incorta
-  # fill_in 'tenant', with: 'demo'
-  fill_in 'tenant', with: 'default'
+  fill_in 'tenant', with: 'demo'
+  # fill_in 'tenant', with: 'default'
 
   fill_in 'username', with: 'admin'
   fill_in 'password', with: '123456'
