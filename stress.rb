@@ -1,5 +1,5 @@
 experiments = 7
-interval = 20
+interval = 3
 
 threads = []
 

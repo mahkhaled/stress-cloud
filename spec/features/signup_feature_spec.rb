@@ -71,7 +71,7 @@ def load_schema(schema_name)
     click_button 'Load'
     expect(page).to have_content 'Loading Data'
 
-    Capybara.using_wait_time(2*60) do
+    Capybara.using_wait_time(5*60) do
       # loading finished
       expect(page).not_to have_content 'Loading Data'
     end
@@ -105,12 +105,11 @@ describe "Incorta cloud stress testing", type: :feature do
     within_window incorta_window do
       login_incorta
       open_dashboard
-      result.merge!({trial1: load_schema('OnlineStore')})
-
-      result.merge!({trial2: load_schema('OnlineStore')})
-      result.merge!({trial3: load_schema('OnlineStore')})
-      result.merge!({trial4: load_schema('OnlineStore')})
-      result.merge!({trial5: load_schema('OnlineStore')})
+      # result.merge!({trial1: load_schema('OnlineStore')})
+      # result.merge!({trial2: load_schema('OnlineStore')})
+      # result.merge!({trial3: load_schema('OnlineStore')})
+      # result.merge!({trial4: load_schema('OnlineStore')})
+      # result.merge!({trial5: load_schema('OnlineStore')})
 
 
     end
