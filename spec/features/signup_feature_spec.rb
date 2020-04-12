@@ -1,10 +1,12 @@
-def signup(email)
+def signup(email, company)
   visit '/signup'
   fill_in 'First Name', with: 'mahmoud'
   fill_in 'Last Name', with: 'khaled'
   fill_in 'SignUpForm_email', with: email
   fill_in 'Job Title', with: 'stresscloudtest'
-  fill_in 'Company', with: 'stress-stg1'
+  # fill_in 'Company', with: 'stress-gke'
+  fill_in 'Company', with: company
+
 
   find('#SignUpForm_industryId').click
   within('ul.ant-select-dropdown-menu') do
@@ -28,27 +30,40 @@ def login(email)
   expect(page).to have_content 'Clusters List'
 end
 
-def open_cluster
+def open_cluster(company)
   start = Time.now
   Capybara.using_wait_time(12*60) do # 12 minutes
-    incorta_window = window_opened_by { click_button 'OPEN' }
+    expect(page).to have_content 'OPEN'
+
+    # incorta_window = window_opened_by { click_button 'OPEN' }
+    # time_to_create = (Time.now - start).to_i
+    # puts "*"*20
+    # puts "Time taken to start cluster #{(Time.now - start).to_i} seconds"
+    # puts "*"*20
+
+
+    # within_window incorta_window do
+    #   expect(page).to have_content 'Unified Data Analytics Platform'
+    # end
+
+    # return {window: incorta_window, time: time_to_create}
+
+    visit("http://#{company}.gke-staging.incortalabs.com/incorta")
     time_to_create = (Time.now - start).to_i
     puts "*"*20
     puts "Time taken to start cluster #{(Time.now - start).to_i} seconds"
     puts "*"*20
 
 
-    within_window incorta_window do
-      expect(page).to have_content 'Unified Data Analytics Platform'
-    end
+    expect(page).to have_content 'Unified Data Analytics Platform'
 
-    return {window: incorta_window, time: time_to_create}
+    return {time: time_to_create}
   end
 end
 
 def login_incorta
-  fill_in 'tenant', with: 'demo'
-  # fill_in 'tenant', with: 'default'
+  # fill_in 'tenant', with: 'demo'
+  fill_in 'tenant', with: 'default'
 
   fill_in 'username', with: 'admin'
   fill_in 'password', with: '123456'
@@ -71,7 +86,7 @@ def load_schema(schema_name)
     click_button 'Load'
     expect(page).to have_content 'Loading Data'
 
-    Capybara.using_wait_time(5*60) do
+    Capybara.using_wait_time(7*60) do
       # loading finished
       expect(page).not_to have_content 'Loading Data'
     end
@@ -89,30 +104,32 @@ describe "Incorta cloud stress testing", type: :feature do
   it "signs me up" do
     start = Time.now
     email = "mahmoud.khaled+#{rand(4549366632)}@incorta.com"
+    # email = "mahmoud.khaled+346416089@incorta.com"
+
+    company = "stress-mo124-#{Time.now.strftime('%H%M%S')}"
+    # company = "stress-mo124-180506"
     result = {email: email}
 
     
-    signup(email)
+    signup(email, company)
 
     login(email)
 
-    # login('mahmoud.khaled+2@incorta.com')
-
-    c = open_cluster
+    c = open_cluster(company)
     result.merge!({cluster_creation_time: c[:time]})
-    incorta_window = c[:window]
+    # incorta_window = c[:window]
 
-    within_window incorta_window do
+    # within_window incorta_window do
       login_incorta
       open_dashboard
-      # result.merge!({trial1: load_schema('OnlineStore')})
-      # result.merge!({trial2: load_schema('OnlineStore')})
-      # result.merge!({trial3: load_schema('OnlineStore')})
+      result.merge!({trial1: load_schema('OnlineStore')})
+      result.merge!({trial2: load_schema('OnlineStore')})
+      result.merge!({trial3: load_schema('OnlineStore')})
       # result.merge!({trial4: load_schema('OnlineStore')})
       # result.merge!({trial5: load_schema('OnlineStore')})
 
 
-    end
+    # end
 
     result[time: (Time.now - start).to_i]
     puts result
