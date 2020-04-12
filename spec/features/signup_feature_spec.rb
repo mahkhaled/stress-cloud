@@ -108,7 +108,7 @@ describe "Incorta cloud stress testing", type: :feature do
 
     company = "stress-mo124-#{Time.now.strftime('%H%M%S')}"
     # company = "stress-mo124-180506"
-    result = {email: email}
+    result = {email: email, company: company}
 
     
     signup(email, company)
