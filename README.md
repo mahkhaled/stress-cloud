@@ -5,9 +5,8 @@ git clone
 
 bundle
 
+cp geckodriver into /usr/local/bin and /usr/bin
 chmod +x geckodriver
-
-export PATH=$PATH:/path/to/geckodriver
 
 ## Run a single test
 rspec

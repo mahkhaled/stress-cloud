@@ -136,6 +136,8 @@ describe "Incorta cloud stress testing", type: :feature do
 
     f = File.open('foo.txt', 'a')
     f.write("\n")
+    f.write("\n")
+
     f.write(result)
     f.close
   end
